@@ -12,29 +12,36 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import uz.itteacher.contactapp103.db.AppDataBase
 import uz.itteacher.contactapp103.layout.CreateContactScreen
 import uz.itteacher.contactapp103.layout.HistoryContactScreen
 import uz.itteacher.contactapp103.layout.MainContactScreen
+import uz.itteacher.contactapp103.layout.SearchScreen
 import uz.itteacher.contactapp103.navigation.NavigationItem
 import uz.itteacher.contactapp103.ui.theme.ContactApp103Theme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val appDataBase = AppDataBase.getInstance(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ContactApp103Theme {
-                Column(modifier = Modifier.fillMaxSize().padding(top = 80.dp, bottom = 80.dp)) {
+                Column(modifier = Modifier.fillMaxSize().padding(top = 60.dp, bottom = 40.dp)) {
                     val navController = rememberNavController()
                     NavHost(navController, startDestination = NavigationItem.Main.route){
                         composable(NavigationItem.Main.route){
-                            MainContactScreen(navController, emptyList())
+                            MainContactScreen(navController, appDataBase)
                         }
                         composable(NavigationItem.History.route){
-                            HistoryContactScreen(navController)
+                            HistoryContactScreen(navController, appDataBase)
                         }
                         composable(NavigationItem.Create.route){
-                            CreateContactScreen(navController)
+                            CreateContactScreen(navController,appDataBase)
+                        }
+                        composable(NavigationItem.Search.route){
+                            SearchScreen(navController,appDataBase)
                         }
                     }
                 }
