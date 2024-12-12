@@ -13,4 +13,6 @@ interface MyContactDAO {
     @Insert
     fun addContact(myContact: MyContact)
 
+    @Query("DELETE FROM contacts WHERE id = :id")
+    fun deleteContact(id: Int)
 }
