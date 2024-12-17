@@ -55,9 +55,13 @@ fun MainContactScreen(navController: NavHostController, appDataBase: AppDataBase
             .sorted()
     }
 
+    var activeSwipeId by remember { mutableStateOf(0) }
+
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     var selectedLetter by remember { mutableStateOf<Char?>(null) }
+
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -91,6 +95,7 @@ fun MainContactScreen(navController: NavHostController, appDataBase: AppDataBase
                 items(myContacts, key = { it.id }) { contact ->
                     var swipeOffset by remember { mutableStateOf(0f) }
                     val maxSwipeOffset = 350f
+
                     Box {
                         Box(
                             modifier = Modifier
@@ -143,7 +148,13 @@ fun MainContactScreen(navController: NavHostController, appDataBase: AppDataBase
                                 .offset { IntOffset(swipeOffset.toInt(), 0) }
                                 .draggable(
                                     orientation = Orientation.Horizontal,
+
                                     state = rememberDraggableState { delta ->
+                                        if (activeSwipeId != contact.id) {
+                                            activeSwipeId = contact.id
+                                            swipeOffset = 0f
+                                        }
+
                                         swipeOffset =
                                             (swipeOffset + delta).coerceIn(0f, maxSwipeOffset)
                                     },
@@ -153,9 +164,14 @@ fun MainContactScreen(navController: NavHostController, appDataBase: AppDataBase
                                         } else {
                                             0f
                                         }
+                                        if (swipeOffset == 0f) {
+                                            activeSwipeId = 0
+                                        }
                                     }
                                 )
-
+                                .clickable {
+                                    activeSwipeId = 0
+                                }
                                 .background(Color.White)
                                 .padding(horizontal = 16.dp)
                         ) {
@@ -175,6 +191,12 @@ fun MainContactScreen(navController: NavHostController, appDataBase: AppDataBase
                                             .padding(18.dp)
                                     )
                                     Text(text = contact.name, fontSize = 20.sp)
+                                }
+                            }
+
+                            LaunchedEffect(activeSwipeId) {
+                                if (activeSwipeId != contact.id && swipeOffset != 0f) {
+                                    swipeOffset = 0f
                                 }
                             }
                         }
