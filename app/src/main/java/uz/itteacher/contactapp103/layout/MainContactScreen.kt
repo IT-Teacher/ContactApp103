@@ -81,7 +81,7 @@ fun MainContactScreen(navController: NavHostController, appDataBase: AppDataBase
                             modifier = Modifier.size(30.dp)
                         )
                     }
-                    IconButton(onClick = { navController.navigate("create") }) {
+                    IconButton(onClick = { navController.navigate("create/0") }) {
                         Icon(
                             Icons.Default.Add,
                             contentDescription = "Add",
@@ -113,7 +113,10 @@ fun MainContactScreen(navController: NavHostController, appDataBase: AppDataBase
                             ) {
                                 // Edit tugmasi
                                 IconButton(
-                                    onClick = {},
+                                    onClick = {
+                                        navController.navigate("create/${contact.id}")
+
+                                    },
                                     modifier = Modifier.padding(8.dp)
                                 ) {
                                     Icon(

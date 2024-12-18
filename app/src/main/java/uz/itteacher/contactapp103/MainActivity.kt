@@ -37,8 +37,9 @@ class MainActivity : ComponentActivity() {
                         composable(NavigationItem.History.route){
                             HistoryContactScreen(navController, appDataBase)
                         }
-                        composable(NavigationItem.Create.route){
-                            CreateContactScreen(navController,appDataBase)
+                        composable(NavigationItem.Create.route){navBackStackEntry ->
+                            val id = navBackStackEntry.arguments?.getString("id").toString()
+                            CreateContactScreen(navController,appDataBase, id.toInt())
                         }
                         composable(NavigationItem.Search.route){
                             SearchScreen(navController,appDataBase)
