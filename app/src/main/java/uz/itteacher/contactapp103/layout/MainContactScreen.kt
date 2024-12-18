@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
@@ -36,7 +38,9 @@ import androidx.compose.material3.SwipeToDismissBoxValue.EndToStart
 import androidx.compose.material3.SwipeToDismissBoxValue.Settled
 import androidx.compose.material3.SwipeToDismissBoxValue.StartToEnd
 import androidx.compose.material3.rememberSwipeToDismissBoxState
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntOffset
 
 
@@ -186,12 +190,15 @@ fun MainContactScreen(navController: NavHostController, appDataBase: AppDataBase
                                     modifier = Modifier.padding(4.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.person),
-                                        contentDescription = "Person",
+                                    AsyncImage(
+                                        model = contact.image,
+                                        contentDescription = null,
+                                        error = painterResource(id = R.drawable.person),
                                         modifier = Modifier
                                             .size(70.dp)
                                             .padding(18.dp)
+                                            .clip(CircleShape),
+                                        contentScale = ContentScale.Crop,
                                     )
                                     Text(text = contact.name, fontSize = 20.sp)
                                 }
